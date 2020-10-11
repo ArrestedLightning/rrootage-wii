@@ -267,6 +267,9 @@ int main(int argc, char *argv[]) {
   initSDL();
   initFirst();
   initTitle();
+  
+  //init controller
+  WPAD_Init();
 
   while ( !done ) {
     SDL_PollEvent(&event);
@@ -287,6 +290,10 @@ int main(int argc, char *argv[]) {
     }
     if ( event.type == SDL_VIDEORESIZE ) {
       resized(event.resize.w, event.resize.h);
+    } else if (event.type == SDL_JOYBUTTONDOWN) {
+      if (event.jbutton.button == 6 /* mote home */|| event.jbutton.button == 19 /* cc home */ ) {
+        done = 1;
+      }
     }
 
     nowTick = SDL_GetTicks();

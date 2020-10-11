@@ -99,7 +99,7 @@ void loadGLTexture(char *fileName, GLuint *texture) {
   glBindTexture(GL_TEXTURE_2D, *texture);
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
-  gluBuild2DMipmaps(GL_TEXTURE_2D, 3, surface->w, surface->h, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+  //gluBuild2DMipmaps(GL_TEXTURE_2D, 3, surface->w, surface->h, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
 }
 
 void generateTexture(GLuint *texture) {
@@ -151,7 +151,7 @@ void initSDL() {
       //screenHeight = 0;
     }
 //    videoFlags = SDL_OPENGL | SDL_FULLSCREEN;
-    videoFlags = SDL_FULLSCREEN;
+    videoFlags = SDL_FULLSCREEN | SDL_DOUBLEBUF;
   } 
   if ( SDL_SetVideoMode(screenWidth, screenHeight, 0, videoFlags) == NULL ) {
 //    fprintf(stderr, "Unable to create OpenGL screen: %s\n", SDL_GetError());
@@ -173,7 +173,7 @@ void initSDL() {
   loadGLTexture(STAR_BMP, &starTexture);
   loadGLTexture(SMOKE_BMP, &smokeTexture);
   loadGLTexture(TITLE_BMP, &titleTexture);
-  print_status("Loaded Textures");
+//  print_status("Loaded Textures");
   SDL_ShowCursor(SDL_DISABLE);
 }
 
