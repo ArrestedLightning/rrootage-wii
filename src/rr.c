@@ -30,6 +30,12 @@
 #include "soundmanager.h"
 #include "attractmanager.h"
 
+#ifdef _WII_
+    #include <wiiuse/wpad.h>
+    #include <ogc/lwp_watchdog.h>
+    #include <fat.h>
+#endif
+
 static int noSound = 0;
 
 // Initialize and load preference.
@@ -242,7 +248,20 @@ int main(int argc, char *argv[]) {
   int buttons;
 
   windowMode = 1;
-  parseArgs(argc, argv);
+
+#ifdef _WII_  
+  sleep(1);
+  bool res = fatInitDefault();
+  if (res == 0) {
+      print_status("Failed to initialize FAT library!\n");
+  }
+    windowMode = 0;
+#endif
+
+  #ifndef _WII_
+    windowMode = 1;
+  //parseArgs(argc, argv);
+  #endif
 
   initDegutil();
   initSDL();

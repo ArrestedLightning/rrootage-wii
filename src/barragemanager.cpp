@@ -23,7 +23,7 @@ Barrage barragePattern[BARRAGE_TYPE_NUM][BARRAGE_PATTERN_MAX];
 int barragePatternNum[BARRAGE_TYPE_NUM];
 
 static const char *BARRAGE_DIR_NAME[BARRAGE_TYPE_NUM] = {
-  "normal", "reversible", "morph", "simple", "morph_heavy", "psy",
+  "/apps/rrootage/normal", "/apps/rrootage/reversible", "/apps/rrootage/morph", "/apps/rrootage/simple", "/apps/rrootage/morph_heavy", "/apps/rrootage/psy",
 };
 
 static int readBulletMLFiles(const char *dirPath, Barrage brg[]) {

@@ -86,3 +86,5 @@ int drawNum(int n, int x ,int y, int s, int r, int g, int b);
 int drawNumRight(int n, int x ,int y, int s, int r, int g, int b);
 int drawNumCenter(int n, int x ,int y, int s, int r, int g, int b);
 int drawTimeCenter(int n, int x ,int y, int s, int r, int g, int b);
+
+void print_status(const char *st, ...);

@@ -11,6 +11,8 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <stdarg.h>
 
 #include "SDL.h"
 
@@ -82,13 +84,14 @@ static void initGL() {
 void loadGLTexture(char *fileName, GLuint *texture) {
   SDL_Surface *surface;
 
-  char name[32];
-  strcpy(name, "images/");
+  char name[128];
+  strcpy(name, "/apps/rrootage/data/images/");
   strcat(name, fileName);
   surface = SDL_LoadBMP(name);
   if ( !surface ) {
-    fprintf(stderr, "Unable to load texture: %s\n", SDL_GetError());
+//    fprintf(stderr, "Unable to load texture: %s\n", SDL_GetError());
     SDL_Quit();
+      print_status("Unable to load texture: %s\n", SDL_GetError());
     exit(1);
   }
 
@@ -123,18 +126,19 @@ SDL_Joystick *stick = NULL;
 void initSDL() {
   Uint32 videoFlags;
 
-  if ( lowres ) {
-    screenWidth  = LOWRES_SCREEN_WIDTH;
-    screenHeight = LOWRES_SCREEN_HEIGHT;
-  } else {
+//  if ( lowres ) {
+//    screenWidth  = LOWRES_SCREEN_WIDTH;
+//    screenHeight = LOWRES_SCREEN_HEIGHT;
+//  } else {
     screenWidth  = SCREEN_WIDTH;
     screenHeight = SCREEN_HEIGHT;
-  }
+  //}
 
   /* Initialize SDL */
   if ( SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0 ) {
-    fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());
-    exit(1);
+    print_status("Failed to initialize SDL!\n");
+//    fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());
+  //  exit(1);
   }
 
   /* Create an OpenGL screen */
@@ -143,15 +147,17 @@ void initSDL() {
   } else {
     if ( !lowres ) {
       // Use native desktop resolution if -lowres is not specified.
-      screenWidth = 0;
-      screenHeight = 0;
+      //screenWidth = 0;
+      //screenHeight = 0;
     }
-    videoFlags = SDL_OPENGL | SDL_FULLSCREEN;
+//    videoFlags = SDL_OPENGL | SDL_FULLSCREEN;
+    videoFlags = SDL_FULLSCREEN;
   } 
   if ( SDL_SetVideoMode(screenWidth, screenHeight, 0, videoFlags) == NULL ) {
-    fprintf(stderr, "Unable to create OpenGL screen: %s\n", SDL_GetError());
+//    fprintf(stderr, "Unable to create OpenGL screen: %s\n", SDL_GetError());
     SDL_Quit();
-    exit(2);
+    print_status("Failed to create SDL/OpenGL screen: %s\n", SDL_GetError());
+//    exit(2);
   }
 
   SDL_Surface* videoSurface = SDL_GetVideoSurface();
@@ -167,7 +173,7 @@ void initSDL() {
   loadGLTexture(STAR_BMP, &starTexture);
   loadGLTexture(SMOKE_BMP, &smokeTexture);
   loadGLTexture(TITLE_BMP, &titleTexture);
-
+  print_status("Loaded Textures");
   SDL_ShowCursor(SDL_DISABLE);
 }
 
@@ -997,4 +1003,54 @@ int getButtonState() {
     btn |= PAD_BUTTONP;
   }
   return btn;
+}
+
+#include <gccore.h>
+
+void print_status(const char *st, ...) {
+
+    va_list arg;
+    static void *xfb = NULL;
+    static GXRModeObj *rmode = NULL;
+
+    char msg[1024] = {0};
+    
+    va_start(arg, st);
+
+    vsnprintf(msg, sizeof(msg), st, arg);
+    
+    va_end(arg);
+
+	// Initialise the video system
+	VIDEO_Init();
+
+	// Obtain the preferred video mode from the system
+	// This will correspond to the settings in the Wii menu
+	rmode = VIDEO_GetPreferredMode(NULL);
+
+	// Allocate memory for the display in the uncached region
+	xfb = MEM_K0_TO_K1(SYS_AllocateFramebuffer(rmode));
+	
+	// Initialise the console, required for printf
+	console_init(xfb,20,20,rmode->fbWidth,rmode->xfbHeight,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
+	
+	// Set up the video registers with the chosen mode
+	VIDEO_Configure(rmode);
+	
+	// Tell the video hardware where our display memory is
+	VIDEO_SetNextFramebuffer(xfb);
+	
+	// Make the display visible
+	VIDEO_SetBlack(FALSE);
+
+	// Flush the video register changes to the hardware
+	VIDEO_Flush();
+
+	// Wait for Video setup to complete
+	VIDEO_WaitVSync();
+	if(rmode->viTVMode&VI_NON_INTERLACE) VIDEO_WaitVSync();
+	printf("\n\n");
+	printf("Error!\n %s\n", msg);
+	sleep(5);
+	exit(0);
 }

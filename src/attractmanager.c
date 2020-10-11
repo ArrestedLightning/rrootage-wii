@@ -34,7 +34,7 @@ int mode;
 
 static HiScore hiScore;
 
-#define PREF_FILE "rr.prf"
+#define PREF_FILE "/apps/rrootage/rr.prf"
 #define DEFAULT_HISCORE 100000
 
 static void initHiScore() {

@@ -1,4 +1,4 @@
-/// ”®ƒNƒ‰ƒX
+ï»¿/// æ•°å¼ã‚¯ãƒ©ã‚¹
 
 #ifndef FORMULA_H_
 #define FORMULA_H_
@@ -36,9 +36,9 @@ public:
 		delete rhs_;
 	}
 
-	/// public ‚¾‚¯‚ÇŒÄ‚Î‚È‚¢‚Å‰º‚³‚¢B
+	/// public ã ã‘ã©å‘¼ã°ãªã„ã§ä¸‹ã•ã„ã€‚
 	/**
-	 * @todo yacc ‚Ìg‚¢‚©‚½‚ğ’²‚×‚ÄA‚±‚ê‚ğ private ‚É
+	 * @todo yacc ã®ä½¿ã„ã‹ãŸã‚’èª¿ã¹ã¦ã€ã“ã‚Œã‚’ private ã«
 	 */
 	//@{
 	DECLSPEC explicit Formula(ANumber* val)

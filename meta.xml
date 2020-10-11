@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+
+<app version='1.0'>
+
+<name>Rrootage</name>
+
+<coder>abagames, ArrestedLightning</coder>
+
+<version>0.1</version>
+
+<release_date>2020-10-04</release_date>
+
+<short_description>Port of Rrootage</short_description>
+
+<long_description>
+Port of Rrootage to the Wii.
+
+
+Written By:
+ABAGames
+ArrestedLightning
+
+</long_description>
+
+</app>
